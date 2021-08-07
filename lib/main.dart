@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,6 +31,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Let's have fun with qr codes"),
+      ),
+      body: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        shrinkWrap: true,
+        children: [
+          Center(
+            child: QrImage(data: 'I am Stan and I love flutter', size: 300),
+          ),
+        ],
       ),
     );
   }
