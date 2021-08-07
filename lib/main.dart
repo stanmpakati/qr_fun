@@ -37,7 +37,11 @@ class _HomePageState extends State<HomePage> {
         shrinkWrap: true,
         children: [
           Center(
-            child: QrImage(data: 'I am Stan and I love flutter', size: 300),
+            child: QrImage(
+              data: 'I am Stan and I love flutter',
+              size: 300,
+              // embeddedImage: AssetImage('Asset.png'),
+            ),
           ),
         ],
       ),
