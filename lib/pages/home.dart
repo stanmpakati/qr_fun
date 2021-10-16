@@ -43,10 +43,20 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+
+              // Settings page
+              SizedBox(height: 40),
               ElevatedButton(
-                onPressed: () => launch("tel://*151#"),
-                child: Text('Dial something'),
+                onPressed: () => Navigator.pushNamed(context, '/settings'),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  child: Text(
+                    'Settings',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
               ),
+
               ElevatedButton(
                 onPressed: () async {
                   await UssdAdvanced.sendUssd(code: '*151#', subscriptionId: 2);
