@@ -14,7 +14,7 @@ class _SettingsPageState extends State<SettingsPage> {
   final _simNumberController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-  late Future<int> phoneNumber;
+  late Future<String> phoneNumber;
   late Future<int> simNumber;
 
   @override
@@ -24,8 +24,8 @@ class _SettingsPageState extends State<SettingsPage> {
     simNumber =
         prefs.then((SharedPreferences _prefs) => _prefs.getInt('sim') ?? 0);
 
-    phoneNumber =
-        prefs.then((SharedPreferences _prefs) => _prefs.getInt('phone') ?? 0);
+    phoneNumber = prefs
+        .then((SharedPreferences _prefs) => _prefs.getString('phone') ?? '');
   }
 
   @override
@@ -34,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         title: Text('Settings'),
       ),
-      body: FutureBuilder<int>(
+      body: FutureBuilder<String>(
           future: phoneNumber,
           builder: (context, snapshot) {
             return Form(
@@ -58,6 +58,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
 
+                  SizedBox(height: 14),
+
                   // Default phone number
                   TextFormField(
                     controller: _phoneNumberController,
@@ -69,9 +71,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       hintText: 'Choose default number',
                       labelText: 'Phone Number',
                     ),
-                    onSaved: (value) {
-                      print(value);
-                    },
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'What phone number?';
@@ -84,6 +83,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
 
+                  SizedBox(height: 24),
+
                   // Submit
                   ElevatedButton(onPressed: submit, child: Text('Submit'))
                 ],
@@ -93,7 +94,15 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  submit() {
+  submit() async {
     print(_phoneNumberController.text);
+    phoneNumber = prefs
+        .then(
+            (_prefs) => _prefs.setString("phone", _phoneNumberController.text))
+        .then((bool success) {
+      return phoneNumber;
+    });
+
+    prefs.then((SharedPreferences _prefs) => print(_prefs.getString('phone')));
   }
 }
